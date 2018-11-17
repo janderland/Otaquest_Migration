@@ -61,7 +61,7 @@ var type = ($details) =>
             .remove()
             .end()
             .text()
-            .trim()
+            .replace(/\s+/g, ' ')
 
 
 
@@ -73,7 +73,7 @@ var subject = ($details) =>
             .remove()
             .end()
             .text()
-            .trim()
+            .replace(/\s+/g, ' ')
 
 
 
@@ -85,7 +85,7 @@ var aname = ($details) =>
             .remove()
             .end()
             .text()
-            .trim()
+            .replace(/\s+/g, ' ')
 
 
 
@@ -97,7 +97,7 @@ var shout = ($details) =>
             .remove()
             .end()
             .text()
-            .trim()
+            .replace(/\s+/g, ' ')
 
 
 
@@ -106,7 +106,7 @@ var text = ($details) =>
             .find('div.section:eq(2)')
             .find('div')
             .text()
-            .trim()
+            .replace(/\s+/g, ' ')
 
 
 
@@ -185,4 +185,27 @@ var rowsAndDetails = $.when(...reqs)
         })
 
         log(outdata)
+
+        cols = [
+            'id',
+            'date',
+            'hour',
+            'author',
+            'link',
+            'type',
+            'subject',
+            'name',
+            'shout',
+            'text',
+            'keywords'
+        ]
+
+        csv = outdata.reduce((csv, row) =>
+                  csv + '\n'
+                      + cols.map((name) =>
+                            row[name]
+                        ).join('|')
+              , cols.join('|'))
+
+        log(csv)
     })
