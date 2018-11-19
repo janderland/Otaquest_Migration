@@ -1,13 +1,16 @@
+(() => {
+
 // Extractors
 // These functions extract information from
 // an article's row or details page.
 
-var id = ($row) =>
+
+let id = ($row) =>
     $row.find('.id_section')
         .text()
 
 
-var date = ($row) => {
+let date = ($row) => {
     let d =
         $row.find('.publish_datetime')
             .children(':first')
@@ -18,7 +21,7 @@ var date = ($row) => {
 }
 
 
-var hour = ($row) => {
+let hour = ($row) => {
     let h =
         $row.find('.publish_datetime')
             .children(':first')
@@ -30,7 +33,7 @@ var hour = ($row) => {
 
 
 
-var author = ($row) =>
+let author = ($row) =>
     $row.find('div.author')
         .find('span')
         .text()
@@ -38,14 +41,14 @@ var author = ($row) =>
 
 
 
-var details_url = ($row) =>
+let details_url = ($row) =>
     $row.find('.edit_section')
         .find('a')
         .attr('href')
 
 
 
-var link = ($details) =>
+let link = ($details) =>
     $details.find('div.main_content')
             .find('li:nth-child(3)')
             .find('a')
@@ -53,7 +56,7 @@ var link = ($details) =>
 
 
 
-var type = ($details) =>
+let type = ($details) =>
     $details.find('div.main_content')
             .find('li:nth-child(5)')
             .clone()
@@ -65,7 +68,7 @@ var type = ($details) =>
 
 
 
-var subject = ($details) =>
+let subject = ($details) =>
     $details.find('div.main_content')
             .find('li:nth-child(6)')
             .clone()
@@ -77,7 +80,7 @@ var subject = ($details) =>
 
 
 
-var aname = ($details) =>
+let aname = ($details) =>
     $details.find('div.main_content')
             .find('li:nth-child(7)')
             .clone()
@@ -89,7 +92,7 @@ var aname = ($details) =>
 
 
 
-var shout = ($details) =>
+let shout = ($details) =>
     $details.find('div.main_content')
             .find('li:nth-child(12)')
             .clone()
@@ -101,7 +104,7 @@ var shout = ($details) =>
 
 
 
-var text = ($details) =>
+let text = ($details) =>
     $details.find('div.main_content')
             .find('div.section:eq(2)')
             .find('div')
@@ -110,7 +113,7 @@ var text = ($details) =>
 
 
 
-var keywords = ($details) =>
+let keywords = ($details) =>
     $details.find('div.main_content')
             .find('span.meta_keyword')
             .map((i, span) =>
@@ -123,179 +126,28 @@ var keywords = ($details) =>
 
 // Main Pipeline
 
-var log = console.log
+let log = console.log
 
 
 
-var $rows =
-    $('table.articles').find('tr:not(:first-child)')
-                       .not('.note_added')
-
-
-
-var urls = $rows.map((i, row) =>
-    details_url($(row))
-).get()
-
-
-
-var reqs = urls.map((url) => $.ajax(url))
-
-
-
-var rowsAndDetails = $.when(...reqs)
-
-    .always(() =>
-        log("ajax finished")
-    )
-
-// Extractors
-// These functions extract information from
-// an article's row or details page.
-
-var id = ($row) =>
-    $row.find('.id_section')
-        .text()
-
-
-var date = ($row) => {
-    let d =
-        $row.find('.publish_datetime')
-            .children(':first')
-            .text()
-            .match(/\d{4}-\d{2}-\d+/g)
-    if (d == null) return ''
-    else return d[0]
-}
-
-
-var hour = ($row) => {
-    let h =
-        $row.find('.publish_datetime')
-            .children(':first')
-            .text()
-            .match(/\d+:\d+/g)
-    if (h == null) return ''
-    else return h[0]
-}
-
-
-
-var author = ($row) =>
-    $row.find('div.author')
-        .find('span')
-        .text()
-        .replace(/\s+/g, ' ')
-
-
-
-var details_url = ($row) =>
-    $row.find('.edit_section')
-        .find('a')
-        .attr('href')
-
-
-
-var link = ($details) =>
-    $details.find('div.main_content')
-            .find('li:nth-child(3)')
-            .find('a')
-            .attr('href')
-
-
-
-var type = ($details) =>
-    $details.find('div.main_content')
-            .find('li:nth-child(5)')
-            .clone()
-            .children()
-            .remove()
-            .end()
-            .text()
-            .replace(/\s+/g, ' ')
-
-
-
-var subject = ($details) =>
-    $details.find('div.main_content')
-            .find('li:nth-child(6)')
-            .clone()
-            .children()
-            .remove()
-            .end()
-            .text()
-            .replace(/\s+/g, ' ')
-
-
-
-var aname = ($details) =>
-    $details.find('div.main_content')
-            .find('li:nth-child(7)')
-            .clone()
-            .children()
-            .remove()
-            .end()
-            .text()
-            .replace(/\s+/g, ' ')
-
-
-
-var shout = ($details) =>
-    $details.find('div.main_content')
-            .find('li:nth-child(12)')
-            .clone()
-            .children()
-            .remove()
-            .end()
-            .text()
-            .replace(/\s+/g, ' ')
-
-
-
-var text = ($details) =>
-    $details.find('div.main_content')
-            .find('div.section:eq(2)')
-            .find('div')
-            .text()
-            .replace(/\s+/g, ' ')
-
-
-
-var keywords = ($details) =>
-    $details.find('div.main_content')
-            .find('span.meta_keyword')
-            .map((i, span) =>
-                $(span).text().trim()
-            )
-            .get()
-            .join(', ')
-
-
-
-// Main Pipeline
-
-var log = console.log
-
-
-
-var $rows =
+let $rows =
     $('table.articles')//.find('tr:not(:first-child)')
                        //.not('.note_added')
                        .find('tr.article_row')
 
 
 
-var urls = $rows.map((i, row) =>
+let urls = $rows.map((i, row) =>
     details_url($(row))
 ).get()
 
 
 
-var reqs = urls.map((url) => $.ajax(url))
+let reqs = urls.map((url) => $.ajax(url))
 
 
 
-var rowsAndDetails = $.when(...reqs)
+let rowsAndDetails = $.when(...reqs)
 
     .fail(function() {
         throw "failed to load details"
@@ -435,3 +287,5 @@ var rowsAndDetails = $.when(...reqs)
 
         log(csv)
     })
+
+})();
