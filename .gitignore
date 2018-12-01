@@ -1,0 +1,4 @@
+images/
+archive/
+*.zip
+.DS_Store
