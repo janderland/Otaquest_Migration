@@ -130,6 +130,7 @@ let edit_url = (id) =>
 let source_html = ($edit) =>
     $edit.find('#blogBody')
          .val()
+         .replace(/\s+/g, ' ')
 
 
 
